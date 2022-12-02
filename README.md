@@ -10,7 +10,8 @@ The purpose is to learn technologies which I'm not that familiar with such as:
 - Docker
 
 ## Todo
-- Add impression count and click tracking
-- Use Redis as cache before batching to database
+- Add click tracking for each post
+  - Remove link, just track the click.
+  - Use Redis as cache before batching to database
 - Containerize/Docker the whole application
 - Add tests
