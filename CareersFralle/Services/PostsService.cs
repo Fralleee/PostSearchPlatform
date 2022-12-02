@@ -1,5 +1,6 @@
 ﻿using CareersFralle.Models;
 using CareersFralle.Repository;
+using Nest;
 
 namespace CareersFralle.Services
 {
@@ -13,18 +14,24 @@ namespace CareersFralle.Services
 
     public class PostsService : IPostsService
     {
-
         private readonly IPostsRepository _repository;
-        public PostsService(IPostsRepository repository)
+        private readonly IElasticClient _elasticClient;
+        public PostsService(IPostsRepository repository, IElasticClient elasticClient)
         {
             _repository = repository;
+            _elasticClient = elasticClient;
         }
 
         public async Task<IEnumerable<Post>> GetPosts() => await _repository.GetPosts();
 
         public async Task<Post?> GetPost(int id) => await _repository.GetPost(id);
 
-        public async Task<Post> CreatePost(Post post) => await _repository.CreatePost(post);
+        public async Task<Post> CreatePost(Post post)
+        {
+            var result = await _repository.CreatePost(post);
+            await _elasticClient.IndexDocumentAsync(post);
+            return result;
+        }
 
         public async Task<IEnumerable<Post>> Generate(int count = 20)
         {
@@ -34,7 +41,13 @@ namespace CareersFralle.Services
                 posts.Add(GeneratePost());
             }
 
-            return await _repository.AddPosts(posts);
+            var result = await _repository.AddPosts(posts);
+            foreach (var post in result)
+            {
+                await _elasticClient.IndexDocumentAsync(post);
+            }
+
+            return result;
         }
 
         private Post GeneratePost()

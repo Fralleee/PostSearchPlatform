@@ -1,8 +1,8 @@
 ﻿using CareersFralle.Data;
 using CareersFralle.Models;
-using CareersFralle.Repository;
 using CareersFralle.Services;
 using Microsoft.AspNetCore.Mvc;
+using Nest;
 
 namespace CareersFralle.Controllers
 {
@@ -10,13 +10,24 @@ namespace CareersFralle.Controllers
     {
         private readonly DataContext _context;
         private readonly IPostsService _postService;
-        private readonly IPostsRepository _postRepository;
+        private readonly IElasticClient _elasticClient;
 
-        public PostsController(DataContext context, IPostsRepository postRepository, IPostsService postService)
+        public PostsController(DataContext context, IPostsService postService, IElasticClient elasticClient)
         {
             _context = context;
-            _postRepository = postRepository;
             _postService = postService;
+            _elasticClient = elasticClient;
+        }
+
+        public async Task<IActionResult> Search(string keyword)
+        {
+            var result = await _elasticClient.SearchAsync<Post>(
+                             s => s.Query(
+                                 q => q.QueryString(
+                                     d => d.Query('*' + keyword + '*')
+                                 )).Size(5000));
+
+            return View("Index", result.Documents);
         }
 
         // GET: Posts
@@ -29,7 +40,6 @@ namespace CareersFralle.Controllers
         public async Task<IActionResult> Generate(int count = 20)
         {
             await _postService.Generate(count);
-
             return RedirectToAction(nameof(Index));
         }
 
