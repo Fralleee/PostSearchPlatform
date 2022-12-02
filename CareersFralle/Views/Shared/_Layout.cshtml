@@ -4,43 +4,47 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CareersFralle</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@@stackoverflow/stacks/dist/css/stacks.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CareersFralle.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">CareersFralle</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+<body class="p64">
+
+    @{
+        var activeController = ViewContext.RouteData.Values["Controller"]?.ToString();
+    }
+
+    <header class="s-topbar ps-fixed t0 l0 js-top-bar">
+        <div class="s-topbar--container jc-center">
+
+            <nav aria-label="Site navigation">
+                <ul class="s-navigation s-navigation__scroll">
+                    <li>
+                        <a asp-controller="Home" asp-action="Index" class="s-navigation--item @(activeController == "Home" ? "is-selected" : "")">Home</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Posts" asp-action="Index" class="s-navigation--item @(activeController == "Posts" ? "is-selected" : "")">Posts</a>
+                    </li>
+                </ul>
+            </nav>
+            <form id="search" role="search" action="/search" class="s-topbar--searchbar js-searchbar search-channel-context wmx4" autocomplete="off">
+                <div class="s-topbar--searchbar--input-group">
+                    <input name="q" type="text" role="combobox" placeholder="Search…" value="" autocomplete="off" maxlength="240" class="s-input s-input__search js-search-field js-search-autocomplete" aria-label="Search" aria-controls="top-search" data-controller="s-popover" data-action="focus->s-popover#show" data-s-popover-placement="bottom-start" aria-expanded="false">
+                    <svg aria-hidden="true" class="s-input-icon s-input-icon__search svg-icon iconSearch" width="18" height="18" viewBox="0 0 18 18"><path d="m18 16.5-5.14-5.18h-.35a7 7 0 1 0-1.19 1.19v.35L16.5 18l1.5-1.5ZM12 7A5 5 0 1 1 2 7a5 5 0 0 1 10 0Z"></path></svg>
                 </div>
-            </div>
-        </nav>
+
+                <input name="searchOn" value="3" type="hidden" class="js-search-on">
+            </form>
+            <button class="s-btn s-btn__filled" type="button">Generate 20 posts</button>
+
+        </div>
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 wmx10 mx-auto">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - CareersFralle - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
