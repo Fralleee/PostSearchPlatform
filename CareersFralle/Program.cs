@@ -13,6 +13,14 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(build
 
 builder.Services.AddElasticsearch(builder.Configuration);
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? throw new InvalidOperationException("Connection string 'Redis' not found.");
+    options.InstanceName = "Fralle_";
+});
+
+builder.Services.AddHostedService<ClickBatchService>();
+
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<IClicksRepository, ClicksRepository>();
 
