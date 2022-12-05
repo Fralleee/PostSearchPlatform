@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using CareersFralle.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,8 +8,7 @@ namespace CareersFralle.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             CreateTables();
         }
@@ -29,6 +29,7 @@ namespace CareersFralle.Data
             }
         }
 
-        public DbSet<CareersFralle.Models.Post> Post { get; set; } = default!;
+        public DbSet<Post> Post { get; set; } = default!;
+        public DbSet<Click> Click { get; set; } = default!;
     }
 }

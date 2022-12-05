@@ -1,4 +1,5 @@
 ﻿@using CareersFralle.Models
+@using Microsoft.AspNetCore.Components
 @model Post
 
 <div class="js-content-article bb bc-black-2">
@@ -12,13 +13,13 @@
         </div>
         <p class="fc-black-800 mb12 js-description ws-pre-line">@Model.Description</p>
         <div class="s-card p0 bar-md bc-black-100 bg-black-025">
-            <a href="@Model.Url" rel="nofollow noreferrer noopener" target="_blank">
+            <a asp-action="Click" asp-controller="Tracking" asp-route-id="@Model?.Id" asp-route-url="/Posts">
                 <img class="w100 hmx2 js-image-url cf-logo bg-white" loading="lazy" src="https://i.stack.imgur.com/JAV54.jpg" style="object-fit:cover; object-position:50% 50%;">
                 <div class="m16 bg-black-025">
                     <h3 class="fs-body2 fw-bold fc-black-900 js-title">@Model.Title</h3>
                     <p class="flex--item fs-body1 lh-xs fw-normal fc-black-500 m0">@Model.Host</p>
                 </div>
-            </a>
+            </a> |
         </div>
     </div>
 </div>

@@ -14,7 +14,10 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(build
 builder.Services.AddElasticsearch(builder.Configuration);
 
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
+builder.Services.AddScoped<IClicksRepository, ClicksRepository>();
+
 builder.Services.AddScoped<IPostsService, PostsService>();
+builder.Services.AddScoped<IClicksService, ClicksService>();
 
 var app = builder.Build();
 

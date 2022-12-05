@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  sql-server-db:
+    container_name: mssql-db
+    image: mcmoe/mssqldocker
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Admin12345!
+      MSSQL_PID: Developer
+      MSSQL_DB: Fralle
+      MSSQL_USER: Fralle
+      MSSQL_PASSWORD: Admin12345!
+    ports:
+      - 1434:1433
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.5.2
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    ports:
+      - 9202:9200
+    networks:
+      - elastic
+  kibana:
+    container_name: kibana
+    image: kibana:8.5.2
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic
+  redis:
+    container_name: redis
+    image: redis
+    volumes:
+      - /var/lib/redis/:/data/
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 6377:6379
+networks:
+  elastic:
+    driver: bridge
