@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<CareersFralle.Models.Post>
 @{
+    ViewData["Title"] = "Posts";
     var totalCount = Model.Count();
     var top20 = Model.Take(20);
 }
+
 <div class="wmx5 mx-auto">
     <div>
         <a asp-action="Create">Create New</a>

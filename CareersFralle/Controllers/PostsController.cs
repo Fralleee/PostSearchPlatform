@@ -27,53 +27,15 @@ namespace CareersFralle.Controllers
             return Json(result.Documents);
         }
 
-        // GET: Posts
         public async Task<IActionResult> Index()
         {
             return View(await _postService.GetPosts());
         }
 
-        // GET: Posts/Generate/20
         public async Task<IActionResult> Generate(int count = 20)
         {
             await _postService.Generate(count);
             return RedirectToAction(nameof(Index));
-        }
-
-        // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (!id.HasValue)
-            {
-                return NotFound();
-            }
-
-            var post = await _postService.GetPost(id.Value);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            return View(post);
-        }
-
-        // GET: Posts/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Posts/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Created,Title,Description,Host,Url")] Post post)
-        {
-            if (ModelState.IsValid)
-            {
-                await _postService.CreatePost(post);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(post);
         }
     }
 }
