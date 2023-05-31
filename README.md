@@ -1,4 +1,4 @@
-# CareersFralle
+# Post Search Solution
 
 This project is a dynamic web application built on ASP.NET Core MVC, primarily developed for learning purposes. Serving as an educational tool, it offers a practical experience in building a full-featured blogging platform with modern web technologies.
 
