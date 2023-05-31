@@ -4,6 +4,8 @@ This project is a dynamic web application built on ASP.NET Core MVC, primarily d
 
 ---
 
+## Features
+
 The application includes key features like:
 
 1. **Creating new posts**: Users can create new blog posts that are stored and displayed on the website.
@@ -12,7 +14,7 @@ The application includes key features like:
 4. **Post Pagination**: The homepage shows a maximum of 20 posts at a time to manage the display of content and maintain page performance.
 5. **Reindexing posts**: There's a function to reindex posts, possibly indicating some sort of search optimization or database management functionality.
 
----
+## Technologies used
 
 This project harnesses the power of a variety of cutting-edge web technologies, each contributing unique features and capabilities:
 
