@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Posts";
     var totalCount = Model.Count();
-    var top20 = Model.Take(20);
+    var top20 = Model.Take(20).ToList();
 }
 
 <div class="wmx5 mx-auto">
@@ -10,14 +10,13 @@
         <a asp-action="Create">Create New</a>
     </div>
     <hr />
-    @if (Model.Count() == 0)
+    @if (totalCount == 0)
     {
         <div>No posts</div>
     }
     else
     {
-
-        <div>Showing @top20.Count() of @totalCount</div>
+        <div>Showing @top20.Count of @totalCount</div>
     }
     @foreach (var post in top20)
     {

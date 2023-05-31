@@ -1,26 +1,31 @@
 ﻿using CareersFralle.Data;
 using CareersFralle.Models;
 
-namespace CareersFralle.Repository
+namespace CareersFralle.Repository;
+
+public interface IClicksRepository
 {
-    public interface IClicksRepository
+    Task<Click> RecordClick(Click click, CancellationToken cancellationToken);
+}
+
+public class ClicksRepository : IClicksRepository
+{
+    private readonly DataContext _context;
+
+    public ClicksRepository(DataContext context)
     {
-        Task<Click> RecordClick(Click click);
+        _context = context;
     }
 
-    public class ClicksRepository : IClicksRepository
+    public async Task<Click> RecordClick(Click click, CancellationToken cancellationToken)
     {
-        private readonly DataContext _context;
-        public ClicksRepository(DataContext context)
+        if (click == null)
         {
-            _context = context;
+            throw new ArgumentNullException(nameof(click));
         }
 
-        public async Task<Click> RecordClick(Click click)
-        {
-            await _context.Click.AddAsync(click);
-            await _context.SaveChangesAsync();
-            return click;
-        }
+        _context.Click.Add(click);
+        await _context.SaveChangesAsync(cancellationToken);
+        return click;
     }
 }

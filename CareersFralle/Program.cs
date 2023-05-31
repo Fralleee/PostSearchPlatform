@@ -3,6 +3,7 @@ using CareersFralle.Extensions;
 using CareersFralle.Repository;
 using CareersFralle.Services;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,12 +14,18 @@ builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(build
 
 builder.Services.AddElasticsearch(builder.Configuration);
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? throw new InvalidOperationException("Connection string 'Redis' not found.");
-    options.InstanceName = "Fralle_";
-});
+//builder.Services.AddStackExchangeRedisCache(options =>
+//{
+//    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? throw new InvalidOperationException("Connection string 'Redis' not found.");
+//    options.InstanceName = "Fralle_";
+//});
 
+builder.Services.AddSingleton(sp =>
+{
+    var configurationOptions = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis") ?? throw new InvalidOperationException("Connection string 'Redis' not found."));
+    var connection = ConnectionMultiplexer.Connect(configurationOptions);
+    return connection.GetServer(connection.GetEndPoints().First());
+});
 builder.Services.AddHostedService<ClickBatchService>();
 
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
@@ -29,11 +36,9 @@ builder.Services.AddScoped<IClicksService, ClicksService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
