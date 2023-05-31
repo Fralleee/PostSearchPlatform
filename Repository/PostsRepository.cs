@@ -1,6 +1,6 @@
-﻿using PostSearchPlatform.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PostSearchPlatform.Data;
 using PostSearchPlatform.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace PostSearchPlatform.Repository;
 

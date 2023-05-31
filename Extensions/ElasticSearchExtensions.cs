@@ -1,5 +1,5 @@
-﻿using PostSearchPlatform.Models;
-using Nest;
+﻿using Nest;
+using PostSearchPlatform.Models;
 
 namespace PostSearchPlatform.Extensions;
 
@@ -30,7 +30,6 @@ public static class ElasticSearchExtensions
     private static void AddDefaultMappings(ConnectionSettings settings)
     {
         settings.DefaultMappingFor<Post>(m => m);
-        //settings.DefaultMappingFor<Post>(m => m.Ignore(p => p.Host));
     }
 
     private static void CreateIndex(IElasticClient client, string indexName)

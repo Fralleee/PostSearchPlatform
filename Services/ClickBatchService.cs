@@ -1,6 +1,6 @@
-﻿using PostSearchPlatform.Extensions;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using PostSearchPlatform.Extensions;
 using PostSearchPlatform.Models;
-using Microsoft.Extensions.Caching.Distributed;
 using StackExchange.Redis;
 
 namespace PostSearchPlatform.Services;

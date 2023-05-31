@@ -1,6 +1,6 @@
-﻿using PostSearchPlatform.Models;
+﻿using Nest;
+using PostSearchPlatform.Models;
 using PostSearchPlatform.Repository;
-using Nest;
 
 namespace PostSearchPlatform.Services;
 

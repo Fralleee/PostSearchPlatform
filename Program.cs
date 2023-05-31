@@ -1,8 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using PostSearchPlatform.Data;
 using PostSearchPlatform.Extensions;
 using PostSearchPlatform.Repository;
 using PostSearchPlatform.Services;
-using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +13,6 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext") ?? throw new InvalidOperationException("Connection string 'DataContext' not found.")));
 
 builder.Services.AddElasticsearch(builder.Configuration);
-
-//builder.Services.AddStackExchangeRedisCache(options =>
-//{
-//    options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? throw new InvalidOperationException("Connection string 'Redis' not found.");
-//    options.InstanceName = "Fralle_";
-//});
 
 builder.Services.AddSingleton(sp =>
 {
@@ -36,7 +30,17 @@ builder.Services.AddScoped<IClicksService, ClicksService>();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<DataContext>();
+        context.Database.Migrate();
+    }
+}
+else
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
